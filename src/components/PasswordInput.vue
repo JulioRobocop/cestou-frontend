@@ -43,43 +43,48 @@ watch(isValid, (val) => emit("update:valid", val));
   <div>
     <div class="mb-4 bg-white">
       <label class="block text-gray-800 mb-1">Digite sua senha</label>
-      <div class="relative">
-        <input
+      <div class="flex items-center border border-gray-300 rounded-md focus-within:border-blue-500">
+          <input
           :type="showPassword ? 'text' : 'password'"
           v-model="password"
+          
           required
           name="password"
           id="password"
-          class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-        />
-        <button type="button" @click="showPassword = !showPassword">
-          <component :is="showPassword ? Eye : EyeOff" class="w-5 h-5" />
-        </button>
+          class="w-full py-2 px-3 outline-none rounded-l-md"
+          />
+          <div class="h-6 w-px bg-gray-100"></div>
+          <button type="button" @click="showPassword = !showPassword">
+            <component :is="showPassword ? Eye : EyeOff" class="w-5 h-5" />
+          </button>
+  
       </div>
     </div>
-
     <div class="mb-4 bg-white">
       <label class="block text-gray-800 mb-1">Repita a senha</label>
-      <input
+      <div class="flex items-center border border-gray-300 rounded-md focus-within:border-blue-500">
+        <input
         :type="showPassword ? 'text' : 'password'"
         v-model="confirmPassword"
         required
         name="password-repeat"
         id="password-repeat"
-        class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-      />
-      <button type="button" @click="showPassword = !showPassword">
-        <component :is="showPassword ? Eye : EyeOff" class="w-5 h-5" />
-      </button>
+        class="w-full py-2 px-3 outline-none rounded-l-md"
+        />
+        <div class="h-6 w-px bg-gray-100"></div>
+        <button type="button" @click="showPassword = !showPassword">
+          <component :is="showPassword ? Eye : EyeOff" class="w-5 h-5" />
+        </button>
+      </div>
       <ul class="mt-2 space-y-1">
         <li
           v-for="(requirement, key) in requirements"
           :key="key"
           class="flex items-center gap-2 text-sm"
-          :class="requirement.predicate ? 'text-green-500' : 'text-gray-400'"
+          :class="requirement.predicate && password != '' ? 'text-green-500' : 'text-gray-400'"
         >
           <component
-            :is="requirement.predicate ? Check : Minus"
+            :is="requirement.predicate && password != '' ? Check : Minus"
             class="w-4 h-4"
           />
           {{ requirement.name }}
