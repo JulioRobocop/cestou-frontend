@@ -1,5 +1,13 @@
+<script setup lang="ts">
+import axios from 'axios';
+import { ref } from 'vue'
+import router from '@/router';
+
+const success = ref(false)
+const error = ref('')
+
+</script>
+
 <template>
-    <div>
-        <h1>Create listings</h1>
-    </div>
+
 </template>

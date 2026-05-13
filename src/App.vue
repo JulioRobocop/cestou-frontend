@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
+import SideBar from './components/SideBar.vue';
+const route = useRoute()
 </script>
 
 <template>
-  <nav>
-    <!-- <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/login">Login</RouterLink>
-    <RouterLink to="/create">Criar anúncio</RouterLink>
-    <RouterLink to="/my-listings">Meus Anúncios</RouterLink> -->
-  </nav>
-
-  <RouterView/>
+  <div class="flex">
+    <SideBar v-if="route.name !== 'login'"/>
+    <main class="flex-1">
+      <RouterView/>
+    </main>
+  </div>
 </template>
