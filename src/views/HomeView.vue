@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import router from "@/router";
 import axios from "axios";
+import { PlusCircle } from "lucide-vue-next";
 import { ref, onMounted } from "vue";
 import { sectorDisplay, sectorColor } from "@/utils/sectorDisplay";
 import CreateListingButton from "@/components/CreateListingButton.vue";
@@ -82,13 +83,14 @@ onMounted(() => {
     <p v-if="listings.length === 0 && !error">
       Nenhuma cesta disponível no momento
     </p>
-    <button @click='showCreateModel = true'>Anunciar Cesta</button>
-      <CreateListingButton
-      v-if="showCreateModel"
-      @close="showCreateModel = false"
-      @created="fetchListings()"
-      
-      />
-   
+    <button @click='showCreateModel = true' class="flex shadow-md hover:shadow-lg transition-all items-center gap-4 border-l-4 mt-10 rounded-lg px-4 py-3 bg-gray-100 hover:bg-black duration-200 hover:text-white">
+      <PlusCircle class="w-6 h-6 min-w-6"/>
+      Anunciar Cesta
+    </button>
+    <CreateListingButton
+    v-if="showCreateModel"
+    @close="showCreateModel = false"
+    @created="fetchListings()"
+    />
   </div>
 </template>
