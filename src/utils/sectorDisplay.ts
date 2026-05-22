@@ -100,3 +100,7 @@ export const sectorColor: Record<string, string> = {
   AMBULATORIO: "bg-white border-gray-200",
   LABORATORIO_GALVANOPLASTIA: "bg-white border-gray-200",
 };
+
+export function getSectorDisplay(sector: string) {
+  return sectorDisplay[sector];
+}

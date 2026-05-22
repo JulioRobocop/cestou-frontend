@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: "/my-listings",
       name: "myListings",
-      component: () => import("@/views/MyListingView.vue"),
+      component: () => import("@/views/MyListingsView.vue"),
     },
   ],
 });
