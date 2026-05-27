@@ -2,7 +2,6 @@
 import router from "@/router";
 import axios from "axios";
 import { onMounted, ref, computed } from "vue";
-import { getSectorColor } from "./HomeView.vue";
 import { formatDate, getMonth } from '@/utils/formatDate'
 import { getSectorDisplay } from "@/utils/sectorDisplay.ts";
 import { formatEnum } from "@/utils/formatEnum.ts";
@@ -11,9 +10,9 @@ const userListings = ref([]);
 const userReservations = ref([]);
 const error = ref("");
 const statusColor: Record<string, string> = {
-  DISPONÍVEL: "bg-green-100 text-green-500",
+  DISPONIVEL: "bg-green-100 text-green-500",
   RESERVADO: "bg-yellow-100 text-yellow-500",
-  CONCLUÍDO: "bg-blue-100 text-blue-500",
+  CONCLUIDO: "bg-blue-100 text-blue-500",
   CANCELADO: "bg-red-100 text-red-500",
 };
 const listingsByMonth = computed(() => {
@@ -23,11 +22,24 @@ const listingsByMonth = computed(() => {
     if (!groups[month]) {
       groups[month] = []
     }
-    groups[month].push
+    groups[month].push(listing)
   }
-
   return groups
 })
+
+
+const reservationsByMonth = computed(() => {
+  const groups: Record<string, any[]> = {}
+  for (const listing of userReservations.value) {
+    const month = getMonth(listing.createdAt)
+    if (!groups[month]) {
+      groups[month] = []
+    }
+    groups[month].push(listing)
+  }
+  return groups
+})
+
 
 async function cancelBook(listingId: number) {
   try {
@@ -143,7 +155,7 @@ onMounted(async () => {
             <hr class="border-t border-gray-300" />
           </div>
           <div class="flex flex-col gap-4">
-            <div v-for="listing in userListings" :key="listing.id">
+            <div v-for="listing in listings" :key="listing.id">
               <div class="bg-white rounded-lg p-4 shadow-md">
                 <div class="flex justify-between items-center mb-2">
                   <span class="font-semibold">Cesta #{{ listing.id }}</span>
@@ -183,15 +195,14 @@ onMounted(async () => {
           Minhas Reservas
           <span class="text-sm text-gray-400">({{ userReservations.length }})</span>
         </h2>
-        <div v-for="(listings, month) in listingsByMonth" :key="month">
+        <div v-for="(reservations, month) in reservationsByMonth" :key="month">
           <div class="text-lg font-semibold mb-4 text-gray-400">
             {{ month }}
             <hr class="border-t border-gray-300" />
           </div>
 
           <div class="flex flex-col gap-4">
-            <div v-for="reservation in userReservations" :key="reservation.id"
-              class="bg-white rounded-lg p-4 shadow-md">
+            <div v-for="reservation in reservations" :key="reservation.id" class="bg-white rounded-lg p-4 shadow-md">
               <div class="flex justify-between items-center mb-2">
                 <span class="font-semibold">{{ reservation.seller.name }}</span>
                 <span class="text-xs font-medium px-2 py-1 rounded-full" :class="statusColor[reservation.status]">
