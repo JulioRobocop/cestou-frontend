@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import router from "@/router";
 import axios from "axios";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, registerRuntimeCompiler } from "vue";
 import { formatDate, getMonth } from '@/utils/formatDate'
 import { getSectorDisplay } from "@/utils/sectorDisplay.ts";
 import { formatEnum } from "@/utils/formatEnum.ts";
@@ -26,6 +26,7 @@ const listingsByMonth = computed(() => {
   }
   return groups
 })
+
 
 
 const reservationsByMonth = computed(() => {
@@ -213,6 +214,8 @@ onMounted(async () => {
                 {{ getSectorDisplay(reservation.seller.sector) }} ·{{ formatEnum(reservation.seller.workShift) }}
               </p>
               <p class="text-sm text-gray-500">{{ formatDate(reservation.createdAt) }}</p>
+              <p class="text-sm text-gray-500">Telefone: </p>
+              <p class="text-sm text-gray-500">{{ reservation.seller.phoneNumber }}</p>
               <div class="mt-3">
                 <button v-if="reservation.status === 'RESERVADO'" @click="cancelBook(reservation.id)"
                   class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded">
