@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Home, PlusCircle, ClipboardList, LogOut, ChevronRightIcon } from 'lucide-vue-next'
+import { Home, ClipboardList, LogOut, ChevronRightIcon } from 'lucide-vue-next'
 
 const isExpanded = ref(localStorage.getItem("is_expanded") === "true")
 
@@ -11,56 +11,38 @@ const toggleMenu = () => {
 </script>
 
 <template>
-  <aside
-    class="flex flex-col bg-black text-white min-h-screen p-4 transition-all duration-200 overflow-hidden"
-    :class="isExpanded ? 'w-60' : 'w-16'"
-  >
+  <aside class="flex flex-col bg-[#ed0c6e] text-white min-h-screen p-4 transition-all duration-200 overflow-hidden"
+    :class="isExpanded ? 'w-60' : 'w-16'">
     <div class="mb-4">
-      <img src="/images/pado.webp" alt="Logo" class="w-8 h-8 rounded" />
+      <img src="/images/pado_logo.svg" alt="Logo" class="size-full rounded" />
     </div>
 
     <div class="flex justify-end mb-4">
-      <button
-        @click="toggleMenu"
-        class="text-white hover:text-gray-600 transition-all duration-200"
-        :class="isExpanded ? 'rotate-180' : ''"
-      >
+      <button @click="toggleMenu" class="text-white hover:text-gray-600 transition-all duration-200"
+        :class="isExpanded ? 'rotate-180' : ''">
         <ChevronRightIcon class="w-6 h-6" />
       </button>
     </div>
 
-    <span
-      class="text-xs uppercase text-gray-500 mb-2 transition-opacity duration-300"
-      :class="isExpanded ? 'opacity-100' : 'opacity-0'"
-    >
+    <span class="text-xs uppercase text-white mb-2 transition-opacity duration-300"
+      :class="isExpanded ? 'opacity-100' : 'opacity-0'">
       Menu
     </span>
 
     <nav class="flex flex-col gap-1 -mx-4">
-      <router-link
-        to="/"
-        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200"
-      >
+      <router-link to="/" class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
         <Home class="w-6 h-6 min-w-6" />
-        <span
-          class="whitespace-nowrap transition-opacity duration-300"
-          :class="isExpanded ? 'opacity-100' : 'opacity-0'"
-        >
+        <span class="whitespace-nowrap transition-opacity duration-300"
+          :class="isExpanded ? 'opacity-100' : 'opacity-0'">
           Home
         </span>
       </router-link>
 
-      
-
-      <router-link
-        to="/my-listings"
-        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200"
-      >
+      <router-link to="/my-listings"
+        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
         <ClipboardList class="w-6 h-6 min-w-6" />
-        <span
-          class="whitespace-nowrap transition-opacity duration-300"
-          :class="isExpanded ? 'opacity-100' : 'opacity-0'"
-        >
+        <span class="whitespace-nowrap transition-opacity duration-300"
+          :class="isExpanded ? 'opacity-100' : 'opacity-0'">
           Meus Anúncios
         </span>
       </router-link>
@@ -69,15 +51,11 @@ const toggleMenu = () => {
     <div class="flex-1"></div>
 
     <nav class="-mx-4">
-      <router-link
-        to="/login"
-        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200"
-      >
+      <router-link to="/login"
+        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
         <LogOut class="w-6 h-6 min-w-6" />
-        <span
-          class="whitespace-nowrap transition-opacity duration-300"
-          :class="isExpanded ? 'opacity-100' : 'opacity-0'"
-        >
+        <span class="whitespace-nowrap transition-opacity duration-300"
+          :class="isExpanded ? 'opacity-100' : 'opacity-0'">
           Sair
         </span>
       </router-link>
