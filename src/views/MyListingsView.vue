@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import router from "@/router";
-import axios from "axios";
+import api from "@/utils/api.ts";
 import { onMounted, ref, computed } from "vue";
 import { formatDate, getMonth } from '@/utils/formatDate'
 import { getSectorDisplay } from "@/utils/sectorDisplay.ts";
@@ -45,18 +44,8 @@ const reservationsByMonth = computed(() => {
 
 async function cancelBook(listingId: number) {
   try {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      alert("Necessário entrar ou registrar para cancelar a cesta");
-      router.push("/login");
-      return;
-    }
-    const user = JSON.parse(userData);
-    const response = await axios.put(
-      `http://localhost:8081/listings/${listingId}/cancel-book`,
-      { employeeId: user.id },
-    );
-    await fetchUserListings(user.id);
+    await api.put(`/listings/${listingId}/cancel-book`);
+    await fetchUserListings();
   } catch (err) {
     error.value = "Não foi possível cancelar a reserva.";
     console.log("Error message: ", err);
@@ -65,18 +54,8 @@ async function cancelBook(listingId: number) {
 
 async function cancelListing(listingId: number) {
   try {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      alert("Necessário entrar ou registrar para cancelar o anúncio");
-      router.push("/login");
-      return;
-    }
-    const user = JSON.parse(userData);
-    const response = await axios.put(
-      `http://localhost:8081/listings/${listingId}/cancel`,
-      { employeeId: user.id },
-    );
-    await fetchUserListings(user.id);
+    await api.put(`/listings/${listingId}/cancel`);
+    await fetchUserListings();
   } catch (err) {
     error.value = "Não foi possível cancelar o anúncio.";
     console.log("Error message: ", err);
@@ -85,29 +64,17 @@ async function cancelListing(listingId: number) {
 
 async function concludedListing(listingId: number) {
   try {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      alert("Necessário entrar ou registrar para cancelar o anúncio");
-      router.push("/login");
-      return;
-    }
-    const user = JSON.parse(userData);
-    const response = await axios.put(
-      `http://localhost:8081/listings/${listingId}/conclude`,
-      { employeeId: user.id },
-    );
-    await fetchUserListings(user.id);
+    await api.put(`/listings/${listingId}/conclude`);
+    await fetchUserListings();
   } catch (err) {
     error.value = "Não foi possível concluir a reserva.";
     console.log("Error message: ", err);
   }
 }
 
-const fetchUserListings = async (id: string) => {
+const fetchUserListings = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8081/employees/${id}/listings?role=seller`,
-    );
+    const response = await api.get(`/listings/my?role=seller`);
     const data = response.data;
     userListings.value = data;
   } catch (err) {
@@ -116,11 +83,9 @@ const fetchUserListings = async (id: string) => {
   }
 };
 
-const fetchUserReservations = async (id: string) => {
+const fetchUserReservations = async () => {
   try {
-    const response = await axios.get(
-      `http://localhost:8081/employees/${id}/listings?role=buyer`,
-    );
+    const response = await api.get(`/listings/my?role=buyer`);
     const data = response.data;
     userReservations.value = data;
   } catch (err) {
@@ -130,15 +95,12 @@ const fetchUserReservations = async (id: string) => {
 };
 
 onMounted(async () => {
-  const userData = localStorage.getItem("user");
-  if (userData) {
-    const user = JSON.parse(userData);
-    await Promise.all([
-      fetchUserListings(user.id),
-      fetchUserReservations(user.id),
-    ]);
-  }
-});
+  await Promise.all([
+    fetchUserListings(),
+    fetchUserReservations(),
+  ]);
+}
+);
 </script>
 
 <template>

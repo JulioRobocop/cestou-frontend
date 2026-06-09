@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import router from "@/router";
-import axios from "axios";
+import api from "@/utils/api.ts";
 import { PlusCircle } from "lucide-vue-next";
 import { ref, onMounted } from "vue";
 import CreateListingButton from "@/components/CreateListingButton.vue";
@@ -15,18 +14,7 @@ const showCreateModel = ref(false)
 
 async function bookListing(listingId: number) {
   try {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      alert("Necessário realizar o login ou registro para reservar uma cesta")
-      router.push("/login");
-      return;
-    }
-    const user = JSON.parse(userData);
-
-    const response = await axios.put(
-      `http://localhost:8081/listings/${listingId}/book`,
-      { employeeId: user.id },
-    );
+    await api.put(`/listings/${listingId}/book`);
     await fetchListings();
   } catch (err) {
     error.value = "Erro ao reservar a cesta";
@@ -36,7 +24,7 @@ async function bookListing(listingId: number) {
 
 const fetchListings = async () => {
   try {
-    const response = await axios.get("http://localhost:8081/listings");
+    const response = await api.get("/listings");
     const data = response.data;
     listings.value = data;
   } catch (err) {

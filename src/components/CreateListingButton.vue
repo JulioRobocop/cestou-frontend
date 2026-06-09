@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import axios from 'axios';
+import api from '@/utils/api.ts';
 import { ref } from 'vue'
-import router from '@/router';
 import { X } from 'lucide-vue-next';
 
 const success = ref(false)
@@ -9,15 +8,8 @@ const error = ref('')
 const emit = defineEmits(['close', 'created'])
 
 async function createListing() {
-    const userData = localStorage.getItem("user")
-    if (!userData) {
-        router.push('/login')
-        alert("Necessário realizar o login ou registro para adicionar uma cesta")
-        return
-    }
     try {
-        const user = JSON.parse(userData);
-        const response = await axios.post("http://localhost:8081/listings", { seller: { id: user.id } })
+        await api.post("/listings")
         success.value = true
         emit('created')
         emit('close')
@@ -30,9 +22,6 @@ async function createListing() {
 <template>
     <div class="fixed inset-0 bg-black/50 flex items-center justify-center">
         <div class="bg-white rounded-lg p-6 shadow-lg max-w-md w-full">
-            <!-- <div>
-                <img src="/images/logo_pado_preta.png" alt="Logo Pado" class="">
-            </div> -->
             <button @click="emit('close')">
                 <X
                     class="hover:rotate-180 cursor-pointer hover:bg-gray-300 transition-all duration-200  rounded-lg w-6 h-6" />

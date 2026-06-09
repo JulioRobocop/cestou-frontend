@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import router from "@/router";
-import axios from "axios";
 import { ref } from "vue";
 import PasswordInput from "@/components/PasswordInput.vue";
+import api from "@/utils/api";
 
 const screen = ref("register");
 const registration = ref("");
@@ -56,12 +56,12 @@ const workShift = ref("");
 async function handleLogin() {
   try {
     error.value = "";
-    const response = await axios.post("http://localhost:8081/employees/login", {
+    const response = await api.post("/employees/login", {
       registration: registration.value,
       password: password.value,
     });
+    localStorage.setItem("token", response.data.token);
     router.push("/");
-    localStorage.setItem("user", JSON.stringify(response.data));
   } catch (err) {
     error.value = "Invalid credentials";
     console.error(err);
@@ -71,8 +71,8 @@ async function handleLogin() {
 async function handleRegister() {
   try {
     error.value = "";
-    const response = await axios.post(
-      "http://localhost:8081/employees/register",
+    const response = await api.post(
+      "/employees/register",
       {
         name: name.value,
         registration: registration.value,
@@ -84,7 +84,7 @@ async function handleRegister() {
       },
     );
     router.push("/");
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("token", response.data.token);
   } catch (err) {
     error.value = "Necessário preencher todos os campos";
     console.error(err);
