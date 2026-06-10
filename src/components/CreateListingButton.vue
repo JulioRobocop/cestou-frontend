@@ -44,5 +44,4 @@ async function createListing() {
             </div>
         </div>
     </div>
-
 </template>

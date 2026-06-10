@@ -45,7 +45,7 @@ const reservationsByMonth = computed(() => {
 async function cancelBook(listingId: number) {
   try {
     await api.put(`/listings/${listingId}/cancel-book`);
-    await fetchUserListings();
+    await fetchUserReservations();
   } catch (err) {
     error.value = "Não foi possível cancelar a reserva.";
     console.log("Error message: ", err);
@@ -174,7 +174,7 @@ onMounted(async () => {
                 </span>
               </div>
               <p class="text-sm text-gray-500">
-                {{ getSectorDisplay(reservation.seller.sector) }} ·{{ formatEnum(reservation.seller.workShift) }}
+                {{ getSectorDisplay(reservation.seller.sector) }} · {{ formatEnum(reservation.seller.workShift) }}
               </p>
               <p class="text-sm text-gray-500">{{ formatDate(reservation.createdAt) }}</p>
               <p class="text-sm text-gray-500">Telefone: {{ formatPhone(reservation.seller.phoneNumber) }}</p>
