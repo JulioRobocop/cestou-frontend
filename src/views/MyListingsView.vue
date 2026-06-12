@@ -82,11 +82,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="p-6">
+  <div class="p-6 h-screen flex flex-col">
     <h1 class="text-3xl font-bold mb-6">Minha Área</h1>
     <p v-if="error" class="text-red-500 mb-4">{{ error }}</p>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0">
+      <div class="rounded-lg shadow-lg hover:shadow-gray-500 transition-shadow p-3 overflow-y-auto pr-2">
         <h2 class="text-xl font-semibold mb-4">
           Meus Anúncios
           <span class="text-sm text-gray-400">({{ userListings.length }})</span>
@@ -134,7 +134,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div>
+      <div class="rounded-lg shadow-lg hover:shadow-gray-500 transition-shadow p-3 overflow-y-auto pr-2">
         <h2 class="text-xl font-semibold mb-4">
           Minhas Reservas
           <span class="text-sm text-gray-400">({{ userReservations.length }})</span>
