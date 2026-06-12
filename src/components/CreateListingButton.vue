@@ -32,7 +32,7 @@ async function createListing() {
             <div class=" bg-black w-full h-0.5 rounded-lg" />
             <div class="mt-4">
                 <label class="block text-gray-800 mb-1">Preço (R$)</label>
-                <input v-model.number="price" type="number" min="1" step="0.01" placeholder="Ex: 150.00"
+                <input v-model.number="price" type="number" min="1" step="0.01" placeholder="Ex: 140.00"
                     class="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500" />
             </div>
             <div v-if="success === true">
