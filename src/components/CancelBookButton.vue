@@ -8,7 +8,7 @@ const error = ref('')
 const emit = defineEmits(['close', 'canceled'])
 
 const props = defineProps<{
-    listingId: number,
+    reservationId: number,
 }>()
 
 async function cancelBook(listingId: number) {
@@ -41,7 +41,7 @@ async function cancelBook(listingId: number) {
             <div class="gap-10 mt-7 flex flex-row justify-center items-center">
                 <button
                     class="bg-green-400 p-4 cursor-pointer hover:p-6 hover:shadow-2xl hover:bg-green-300 transition-all rounded-2xl"
-                    @click="cancelBook(props.listingId)">Confirmar</button>
+                    @click="cancelBook(props.reservationId)">Confirmar</button>
                 <button
                     class="bg-red-400 p-4 cursor-pointer hover:p-6 hover:shadow-2xl hover:bg-red-300 transition-all rounded-2xl"
                     @click="emit('close')">Cancelar</button>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import api from "@/utils/api.ts";
 import CancelBookButton from "@/components/CancelBookButton.vue";
+import CancelListingButton from "@/components/CancelListingButton.vue";
+import ConcludedListingButton from "@/components/ConcludedListingButton.vue";
 import { onMounted, ref, computed } from "vue";
 import { formatDate, getMonth } from '@/utils/formatDate'
 import { getSectorDisplay } from "@/utils/sectorDisplay.ts";
@@ -10,8 +12,11 @@ import formatPhone from "@/utils/formatPhone.ts";
 const userListings = ref([]);
 const userReservations = ref([]);
 const error = ref("");
+const selectedReservationId = ref(0)
 const selectedListingId = ref(0)
 const showCancelBookModel = ref(false)
+const showCancelListingModel = ref(false)
+const showConcludedListingModel = ref(false)
 
 const statusColor: Record<string, string> = {
   DISPONIVEL: "bg-green-100 text-green-500",
@@ -31,8 +36,6 @@ const listingsByMonth = computed(() => {
   return groups
 })
 
-
-
 const reservationsByMonth = computed(() => {
   const groups: Record<string, any[]> = {}
   for (const listing of userReservations.value) {
@@ -45,25 +48,7 @@ const reservationsByMonth = computed(() => {
   return groups
 })
 
-async function cancelListing(listingId: number) {
-  try {
-    await api.put(`/listings/${listingId}/cancel`);
-    await fetchUserListings();
-  } catch (err) {
-    error.value = "Não foi possível cancelar o anúncio.";
-    console.log("Error message: ", err);
-  }
-}
 
-async function concludedListing(listingId: number) {
-  try {
-    await api.put(`/listings/${listingId}/conclude`);
-    await fetchUserListings();
-  } catch (err) {
-    error.value = "Não foi possível concluir a reserva.";
-    console.log("Error message: ", err);
-  }
-}
 
 const fetchUserListings = async () => {
   try {
@@ -127,11 +112,12 @@ onMounted(async () => {
                 </div>
                 <div class="mt-3 flex gap-2">
                   <button v-if="listing.status === 'DISPONIVEL' || listing.status === 'RESERVADO'"
-                    @click='cancelListing(listing.id)'
+                    @click='selectedListingId = listing.id; showCancelListingModel = true'
                     class="bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded">
                     Cancelar Anúncio
                   </button>
-                  <button v-if="listing.status === 'RESERVADO'" @click="concludedListing(listing.id)"
+                  <button v-if="listing.status === 'RESERVADO'"
+                    @click="selectedListingId = listing.id; showConcludedListingModel = true"
                     class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded">
                     Concluir Venda
                   </button>
@@ -141,6 +127,10 @@ onMounted(async () => {
                 Nenhum anúncio criado
               </p>
             </div>
+            <CancelListingButton :listingId="selectedListingId" v-if="showCancelListingModel"
+              @close="showCancelListingModel = false" @canceled="fetchUserListings()" />
+            <ConcludedListingButton :listingId="selectedListingId" v-if="showConcludedListingModel"
+              @close="showConcludedListingModel = false" @concluded="fetchUserListings()" />
           </div>
         </div>
       </div>
@@ -170,13 +160,13 @@ onMounted(async () => {
               <p class="text-sm text-gray-500">Telefone: {{ formatPhone(reservation.seller.phoneNumber) }}</p>
               <div class="mt-3">
                 <button v-if="reservation.status === 'RESERVADO'"
-                  @click="selectedListingId = reservation.id; showCancelBookModel = true"
+                  @click="selectedReservationId = reservation.id; showCancelBookModel = true"
                   class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded">
                   Cancelar Reserva
                 </button>
               </div>
             </div>
-            <CancelBookButton :listingId="selectedListingId" v-if="showCancelBookModel"
+            <CancelBookButton :reservationId="selectedReservationId" v-if="showCancelBookModel"
               @close="showCancelBookModel = false" @canceled="fetchUserReservations()" />
             <p v-if="userReservations.length === 0" class="text-gray-400 text-sm">Nenhuma reserva feita</p>
           </div>
