@@ -48,6 +48,7 @@ onMounted(() => {
         <p class="text-lg font-semibold">{{ listing.seller.name }}</p>
         <p class="text-sm text-gray-500">Setor : {{ getSectorDisplay(listing.seller.sector) }}</p>
         <p class="text-sm text-gray-500">Turno : {{ formatEnum(listing.seller.workShift) }}</p>
+        <p class="text-sm text-gray-500">Preço : R$ {{ listing.price }}</p>
         <p class="text-sm text-gray-500">{{ formatDate(listing.createdAt) }}</p>
         <button
           class="mt-auto bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-md transition-colors"
