@@ -27,7 +27,7 @@ const logOut = () => {
     </div>
 
     <div class="flex justify-end mb-4">
-      <button @click="toggleMenu" class="text-white hover:text-gray-600 transition-all duration-200"
+      <button @click="toggleMenu" class="text-white hover:bg-[#4F1528] transition-all duration-200"
         :class="isExpanded ? 'rotate-180' : ''">
         <ChevronRightIcon class="w-6 h-6" />
       </button>
@@ -46,7 +46,7 @@ const logOut = () => {
     </span>
 
     <nav class="flex flex-col gap-1 -mx-4">
-      <router-link to="/" class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
+      <router-link to="/" class="flex items-center gap-4 px-4 py-3 hover:bg-[#4F1528] transition-colors duration-200">
         <Home class="w-6 h-6 min-w-6" />
         <span class="whitespace-nowrap transition-opacity duration-300"
           :class="isExpanded ? 'opacity-100' : 'opacity-0'">
@@ -55,7 +55,7 @@ const logOut = () => {
       </router-link>
 
       <router-link to="/my-listings"
-        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
+        class="flex items-center gap-4 px-4 py-3 hover:bg-[#4F1528] transition-colors duration-200">
         <ClipboardList class="w-6 h-6 min-w-6" />
         <span class="whitespace-nowrap transition-opacity duration-300"
           :class="isExpanded ? 'opacity-100' : 'opacity-0'">
@@ -68,7 +68,7 @@ const logOut = () => {
 
     <nav class="-mx-4">
       <router-link @click="logOut()" to="/login"
-        class="flex items-center gap-4 px-4 py-3 hover:bg-gray-600 transition-colors duration-200">
+        class="flex items-center gap-4 px-4 py-3 hover:bg-[#4F1528] transition-colors duration-200">
         <LogOut class="w-6 h-6 min-w-6" />
         <span class="whitespace-nowrap transition-opacity duration-300"
           :class="isExpanded ? 'opacity-100' : 'opacity-0'">
