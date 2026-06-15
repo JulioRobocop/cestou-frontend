@@ -2,6 +2,7 @@
 import { Home, ClipboardList, LogOut, ChevronRightIcon, CircleUserRoundIcon } from 'lucide-vue-next'
 import { getUserFromToken } from '@/utils/getUserFromToken'
 import { ref } from 'vue'
+import router from '@/router'
 
 const isExpanded = ref(localStorage.getItem("is_expanded") === "true")
 const user = getUserFromToken()
@@ -12,9 +13,9 @@ const toggleMenu = () => {
   localStorage.setItem("is_expanded", String(isExpanded.value))
 }
 
-const logOut = () => {
-  const token = localStorage.getItem("token")
-  if (token) localStorage.removeItem("token")
+function logout() {
+  localStorage.removeItem('token')
+  router.push("/login")
 }
 
 </script>
@@ -67,14 +68,14 @@ const logOut = () => {
     <div class="flex-1"></div>
 
     <nav class="-mx-4">
-      <router-link @click="logOut()" to="/login"
+      <button @click="logout" to="/login"
         class="flex items-center gap-4 px-4 py-3 hover:bg-[#4F1528] transition-colors duration-200">
         <LogOut class="w-6 h-6 min-w-6" />
         <span class="whitespace-nowrap transition-opacity duration-300"
           :class="isExpanded ? 'opacity-100' : 'opacity-0'">
           Sair
         </span>
-      </router-link>
+      </button>
     </nav>
   </aside>
 </template>
