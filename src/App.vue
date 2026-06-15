@@ -6,9 +6,9 @@ const route = useRoute()
 
 <template>
   <div class="flex">
-    <SideBar v-if="route.name !== 'login'"/>
+    <SideBar v-if="route.name !== 'login' && route.name !== 'register'" />
     <main class="flex-1">
-      <RouterView/>
+      <RouterView />
     </main>
   </div>
 </template>
