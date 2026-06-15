@@ -86,93 +86,96 @@ onMounted(async () => {
     <h1 class="text-3xl font-bold mb-6">Minha Área</h1>
     <p v-if="error" class="text-red-500 mb-4">{{ error }}</p>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1 min-h-0">
-      <div class="rounded-lg shadow-lg hover:shadow-gray-500 transition-shadow p-3 overflow-y-auto pr-2">
+      <div class="flex flex-col min-h-0">
         <h2 class="text-xl font-semibold mb-4">
           Meus Anúncios
           <span class="text-sm text-gray-400">({{ userListings.length }})</span>
         </h2>
-        <div v-for="(listings, month) in listingsByMonth" :key="month">
-          <div class="text-lg font-semibold mb-4 text-gray-400">
-            {{ month }}
-            <hr class="border-t border-gray-300" />
-          </div>
-          <div class="flex flex-col gap-4">
-            <div v-for="listing in listings" :key="listing.id">
-              <div class="bg-white rounded-lg p-4 shadow-md">
-                <div class="flex justify-between items-center mb-2">
-                  <span class="font-semibold">Cesta #{{ listing.id }}</span>
-                  <span class="text-xs font-medium px-2 py-1 rounded-full" :class="statusColor[listing.status]">
-                    {{ listing.status }}
-                  </span>
-                </div>
-                <p class="text-sm text-gray-500">{{ formatDate(listing.createdAt) }}</p>
-                <div v-if="listing.status === 'RESERVADO' && listing.buyer" class="mt-2 text-sm text-gray-600">
-                  <p>Reservado por: {{ listing.buyer.name }}</p>
-                  <p>Setor: {{ getSectorDisplay(listing.buyer.sector) }}</p>
-                </div>
-                <div class="mt-3 flex gap-2">
-                  <button v-if="listing.status === 'DISPONIVEL' || listing.status === 'RESERVADO'"
-                    @click='selectedListingId = listing.id; showCancelListingModel = true'
-                    class="bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded">
-                    Cancelar Anúncio
-                  </button>
-                  <button v-if="listing.status === 'RESERVADO'"
-                    @click="selectedListingId = listing.id; showConcludedListingModel = true"
-                    class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded">
-                    Concluir Venda
-                  </button>
-                </div>
-              </div>
-              <p v-if="userListings.length === 0" class="text-gray-400 text-sm">
-                Nenhum anúncio criado
-              </p>
+        <div class="rounded-lg shadow-lg custom-scroll hover:shadow-gray-500 transition-all p-3 overflow-y-auto pr-2">
+          <div v-for="(listings, month) in listingsByMonth" :key="month">
+            <div class="text-lg font-semibold mb-4 text-gray-400">
+              {{ month }}
+              <hr class="border-t border-gray-300" />
             </div>
-            <CancelListingButton :listingId="selectedListingId" v-if="showCancelListingModel"
-              @close="showCancelListingModel = false" @canceled="fetchUserListings()" />
-            <ConcludedListingButton :listingId="selectedListingId" v-if="showConcludedListingModel"
-              @close="showConcludedListingModel = false" @concluded="fetchUserListings()" />
+            <div class="flex flex-col gap-4">
+              <div v-for="listing in listings" :key="listing.id">
+                <div class="bg-white rounded-lg p-4 shadow-md">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="font-semibold">Cesta #{{ listing.id }}</span>
+                    <span class="text-xs font-medium px-2 py-1 rounded-full" :class="statusColor[listing.status]">
+                      {{ listing.status }}
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-500">{{ formatDate(listing.createdAt) }}</p>
+                  <div v-if="listing.status === 'RESERVADO' && listing.buyer" class="mt-2 text-sm text-gray-600">
+                    <p>Reservado por: {{ listing.buyer.name }}</p>
+                    <p>Setor: {{ getSectorDisplay(listing.buyer.sector) }}</p>
+                  </div>
+                  <div class="mt-3 flex gap-2">
+                    <button v-if="listing.status === 'DISPONIVEL' || listing.status === 'RESERVADO'"
+                      @click='selectedListingId = listing.id; showCancelListingModel = true'
+                      class="bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded">
+                      Cancelar Anúncio
+                    </button>
+                    <button v-if="listing.status === 'RESERVADO'"
+                      @click="selectedListingId = listing.id; showConcludedListingModel = true"
+                      class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded">
+                      Concluir Venda
+                    </button>
+                  </div>
+                </div>
+                <p v-if="userListings.length === 0" class="text-gray-400 text-sm">
+                  Nenhum anúncio criado
+                </p>
+              </div>
+              <CancelListingButton :listingId="selectedListingId" v-if="showCancelListingModel"
+                @close="showCancelListingModel = false" @canceled="fetchUserListings()" />
+              <ConcludedListingButton :listingId="selectedListingId" v-if="showConcludedListingModel"
+                @close="showConcludedListingModel = false" @concluded="fetchUserListings()" />
+            </div>
           </div>
         </div>
       </div>
-      <div class="rounded-lg shadow-lg hover:shadow-gray-500 transition-shadow p-3 overflow-y-auto pr-2">
+      <div class="flex flex-col min-h-0">
         <h2 class="text-xl font-semibold mb-4">
           Minhas Reservas
           <span class="text-sm text-gray-400">({{ userReservations.length }})</span>
         </h2>
-        <div v-for="(reservations, month) in reservationsByMonth" :key="month">
-          <div class="text-lg font-semibold mb-4 text-gray-400">
-            {{ month }}
-            <hr class="border-t border-gray-300" />
-          </div>
-
-          <div class="flex flex-col gap-4">
-            <div v-for="reservation in reservations" :key="reservation.id" class="bg-white rounded-lg p-4 shadow-md">
-              <div class="flex justify-between items-center mb-2">
-                <span class="font-semibold">{{ reservation.seller.name }}</span>
-                <span class="text-xs font-medium px-2 py-1 rounded-full" :class="statusColor[reservation.status]">
-                  {{ reservation.status }}
-                </span>
-              </div>
-              <p class="text-sm text-gray-500">
-                {{ getSectorDisplay(reservation.seller.sector) }} · {{ formatEnum(reservation.seller.workShift) }}
-              </p>
-              <p class="text-sm text-gray-500">{{ formatDate(reservation.createdAt) }}</p>
-              <p class="text-sm text-gray-500">Telefone: {{ formatPhone(reservation.seller.phoneNumber) }}</p>
-              <div class="mt-3">
-                <button v-if="reservation.status === 'RESERVADO'"
-                  @click="selectedReservationId = reservation.id; showCancelBookModel = true"
-                  class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded">
-                  Cancelar Reserva
-                </button>
-              </div>
+        <div class="rounded-lg shadow-lg custom-scroll hover:shadow-gray-500 transition-all p-3 overflow-y-auto pr-2">
+          <div v-for="(reservations, month) in reservationsByMonth" :key="month">
+            <div class="text-lg font-semibold mb-4 text-gray-400">
+              {{ month }}
+              <hr class="border-t border-gray-300" />
             </div>
-            <CancelBookButton :reservationId="selectedReservationId" v-if="showCancelBookModel"
-              @close="showCancelBookModel = false" @canceled="fetchUserReservations()" />
-            <p v-if="userReservations.length === 0" class="text-gray-400 text-sm">Nenhuma reserva feita</p>
+
+            <div class="flex flex-col gap-4">
+              <div v-for="reservation in reservations" :key="reservation.id" class="bg-white rounded-lg p-4 shadow-md">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-semibold">{{ reservation.seller.name }}</span>
+                  <span class="text-xs font-medium px-2 py-1 rounded-full" :class="statusColor[reservation.status]">
+                    {{ reservation.status }}
+                  </span>
+                </div>
+                <p class="text-sm text-gray-500">
+                  {{ getSectorDisplay(reservation.seller.sector) }} · {{ formatEnum(reservation.seller.workShift) }}
+                </p>
+                <p class="text-sm text-gray-500">{{ formatDate(reservation.createdAt) }}</p>
+                <p class="text-sm text-gray-500">Telefone: {{ formatPhone(reservation.seller.phoneNumber) }}</p>
+                <div class="mt-3">
+                  <button v-if="reservation.status === 'RESERVADO'"
+                    @click="selectedReservationId = reservation.id; showCancelBookModel = true"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded">
+                    Cancelar Reserva
+                  </button>
+                </div>
+              </div>
+              <CancelBookButton :reservationId="selectedReservationId" v-if="showCancelBookModel"
+                @close="showCancelBookModel = false" @canceled="fetchUserReservations()" />
+              <p v-if="userReservations.length === 0" class="text-gray-400 text-sm">Nenhuma reserva feita</p>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
