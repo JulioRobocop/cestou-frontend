@@ -1,3 +1,4 @@
+import api from "@/utils/api";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/LoginView.vue";
@@ -34,14 +35,12 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
-  const token = localStorage.getItem("token");
-
-  if (to.name !== "login" && to.name !== "register" && !token) {
+router.beforeEach(async (to) => {
+  if (to.name === "login" || to.name === "register") return;
+  try {
+    await api.get("/employee/me");
+  } catch {
     return { name: "login" };
-  }
-  if ((to.name === "login" || to.name === "register") && token) {
-    return { name: "home" };
   }
 });
 
