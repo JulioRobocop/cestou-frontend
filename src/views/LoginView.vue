@@ -14,7 +14,7 @@ async function handleLogin() {
       registration: registration.value,
       password: password.value,
     });
-    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("userName", response.data.name);
     router.push("/");
   } catch (err) {
     error.value = "Invalid credentials";
