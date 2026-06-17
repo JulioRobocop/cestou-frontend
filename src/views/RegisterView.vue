@@ -4,6 +4,7 @@ import PasswordInput from "@/components/PasswordInput.vue";
 import { ref } from "vue";
 import router from "@/router";
 import { sectorOptions } from "@/utils/sectorOptions.ts";
+import { workShiftOptions } from "@/utils/workShiftOptions";
 
 const error = ref("");
 const name = ref("");
@@ -13,7 +14,6 @@ const sector = ref("");
 const phoneNumber = ref("");
 const password = ref("");
 const passwordValid = ref(false);
-const workShiftOptions = ["MANHÃ", "TARDE", "NOITE", "COMERCIAL"];
 const workShift = ref("");
 
 async function handleRegister() {
