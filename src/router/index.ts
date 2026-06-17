@@ -38,7 +38,7 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   if (to.name === "login" || to.name === "register") return;
   try {
-    await api.get("/employee/me");
+    await api.get("/employees/me");
   } catch {
     return { name: "login" };
   }
